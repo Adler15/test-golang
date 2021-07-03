@@ -1,0 +1,285 @@
+definitions:
+  student.StudentTest:
+    properties:
+      address:
+        type: string
+      age:
+        type: integer
+      id:
+        type: integer
+      name:
+        type: string
+    type: object
+  test.Test:
+    properties:
+      id:
+        type: integer
+      test1:
+        type: string
+      test2:
+        type: string
+      test3:
+        type: string
+      test4:
+        type: string
+      test5:
+        type: string
+    type: object
+host: localhost:9195
+info:
+  contact:
+    email: chenfeilong1115@hotmail.com
+    name: Victor
+    url: https://github.com/Adler15
+  description: Victor的golang测试项目
+  license:
+    name: Apache 2.0
+    url: http://www.apache.org/licenses/LICENSE-2.0.html
+  termsOfService: https://github.com/Adler15
+  title: The Golang Project of Victor
+  version: "1.0"
+paths:
+  /create:
+    post:
+      consumes:
+      - application/json
+      description: 新增学生数据
+      parameters:
+      - description: Student
+        in: body
+        name: student
+        required: true
+        schema:
+          $ref: '#/definitions/student.StudentTest'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: RowsAffected
+          schema:
+            type: int
+      summary: 新增学生信息接口
+      tags:
+      - 用户的增删查改
+  /createTest:
+    post:
+      consumes:
+      - application/json
+      description: 新增测试类
+      parameters:
+      - description: Test
+        in: body
+        name: test
+        required: true
+        schema:
+          $ref: '#/definitions/test.Test'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: 成功的条数
+          schema:
+            type: int
+      summary: 新增测试类
+      tags:
+      - 测试类的增删查改
+  /delete:
+    delete:
+      consumes:
+      - application/json
+      description: 删除学生数据
+      parameters:
+      - description: Student ID
+        in: query
+        name: id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: RowsAffected
+          schema:
+            type: int
+      summary: 删除学生信息接口
+      tags:
+      - 用户的增删查改
+  /deleteTest:
+    delete:
+      consumes:
+      - application/json
+      description: 删除测试类
+      parameters:
+      - description: Test ID
+        in: query
+        name: id
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: 成功的条数
+          schema:
+            type: int
+      summary: 删除测试类
+      tags:
+      - 测试类的增删查改
+  /findAll:
+    get:
+      description: 查询全部学生数据
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: All Student
+          schema:
+            $ref: '#/definitions/student.StudentTest'
+      summary: 获取全部学生数据接口
+      tags:
+      - 用户的增删查改
+  /findAllTest:
+    get:
+      consumes:
+      - application/json
+      description: 查询全部测试类
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: All Test
+          schema:
+            $ref: '#/definitions/test.Test'
+      summary: 查询全部测试类
+      tags:
+      - 测试类的增删查改
+  /findByName:
+    get:
+      consumes:
+      - application/json
+      description: 通过名字查询学生数据
+      parameters:
+      - description: Student Name
+        in: query
+        name: name
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Student
+          schema:
+            $ref: '#/definitions/student.StudentTest'
+      summary: 通过名字获取某学生信息接口
+      tags:
+      - 用户的增删查改
+  /findByWhere:
+    get:
+      consumes:
+      - application/json
+      description: 通过条件查询测试类
+      parameters:
+      - description: Where of Test
+        in: body
+        name: where
+        required: true
+        schema:
+          $ref: '#/definitions/test.Test'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Where Test
+          schema:
+            $ref: '#/definitions/test.Test'
+      summary: 通过条件查询测试类
+      tags:
+      - 测试类的增删查改
+  /findOne:
+    get:
+      consumes:
+      - application/json
+      description: 查询一个学生数据
+      parameters:
+      - description: ID
+        in: query
+        name: id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Student
+          schema:
+            $ref: '#/definitions/student.StudentTest'
+      summary: 获取某学生信息接口
+      tags:
+      - 用户的增删查改
+  /findOneTest:
+    get:
+      consumes:
+      - application/json
+      description: 查询一条测试类
+      parameters:
+      - description: Test ID
+        in: query
+        name: id
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Test
+          schema:
+            $ref: '#/definitions/test.Test'
+      summary: 查询一条测试类
+      tags:
+      - 测试类的增删查改
+  /update:
+    put:
+      consumes:
+      - application/json
+      description: 更新学生数据
+      parameters:
+      - description: Student
+        in: body
+        name: student
+        required: true
+        schema:
+          $ref: '#/definitions/student.StudentTest'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: RowsAffected
+          schema:
+            type: int
+      summary: 更新学生信息接口
+      tags:
+      - 用户的增删查改
+  /updateTest:
+    put:
+      consumes:
+      - application/json
+      description: 更新测试类
+      parameters:
+      - description: Test
+        in: body
+        name: test
+        required: true
+        schema:
+          $ref: '#/definitions/test.Test'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: 成功的条数
+          schema:
+            type: int
+      summary: 更新测试类
+      tags:
+      - 测试类的增删查改
+swagger: "2.0"

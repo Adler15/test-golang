@@ -1,0 +1,22 @@
+version: "3.8"
+services:
+  golang-demo:
+    container_name: golang-demo
+    image: golang-demo
+    #    env_file:
+    #      - ./envfile
+    environment:
+      - BCF_NACOS_IP=192.168.130.70
+    ports:
+      - "9195:9195"
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+    logging:
+      driver: json-file
+      options:
+        max-file: '2'
+        max-size: 10m
+networks:
+  default:
+    external:
+      name: k2data-bcf

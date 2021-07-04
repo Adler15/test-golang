@@ -9,6 +9,7 @@ ENV GO111MODULE=on \
     CGO_ENABLED=0 \
     GOOS=linux \
     GOARCH=amd64 \
+    GOPROXY=https://goproxy.cn,https://goproxy.io,direct
 
 WORKDIR /app
 
@@ -16,7 +17,7 @@ COPY go.mod .
 COPY go.sum .
 RUN go mod download
 
-COPY *.go .
+COPY . .
 
 RUN go build -o /golang-demo
 
@@ -24,7 +25,8 @@ RUN go build -o /golang-demo
 ## Deploy
 ##
 
-FROM gcr.io/distroless/base-debian10
+#FROM gcr.io/distroless/base-debian10
+FROM scratch
 
 WORKDIR /
 

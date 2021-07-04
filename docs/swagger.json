@@ -15,7 +15,7 @@
         },
         "version": "1.0"
     },
-    "host": "localhost:9195",
+    "host": "192.168.130.70:9195",
     "paths": {
         "/create": {
             "post": {

@@ -25,7 +25,7 @@ definitions:
       test5:
         type: string
     type: object
-host: localhost:9195
+host: 192.168.130.70:9195
 info:
   contact:
     email: chenfeilong1115@hotmail.com

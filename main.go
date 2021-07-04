@@ -27,7 +27,7 @@ import (
 //@license.name Apache 2.0
 //@license.url http://www.apache.org/licenses/LICENSE-2.0.html
 
-//@host localhost:9195
+//@host 192.168.130.70:9195
 //@BasePath
 func main() {
 	// 加载多个APP的路由配置
@@ -35,11 +35,12 @@ func main() {
 	// 初始化路由
 	r := routers.Init()
 
-	url := ginSwagger.URL("http://localhost:9195/swagger/doc.json")
-	r.GET("/swagger/*any", ginSwagger.WrapHandler(swaggerFiles.Handler, url))
-
 	//在环境变量中获取nacos的ip
 	nacosIp := os.Getenv("BCF_NACOS_IP")
+
+	url := ginSwagger.URL(nacosIp+":9195/swagger/doc.json")
+	r.GET("/swagger/*any", ginSwagger.WrapHandler(swaggerFiles.Handler, url))
+
 	// 创建clientConfig的另一种方式
 	clientConfig := *constant.NewClientConfig(
 		constant.WithNamespaceId(""), //当namespace是public时，此处填空字符串。

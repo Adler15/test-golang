@@ -34,6 +34,7 @@ func findAllTest() []Test {
 
 func findOneTest(id string) Test {
 	db := db.GetDB()
+	test := Test{}
 	db.First(&test, id)
 	return test
 }

@@ -9,4 +9,5 @@ func Routers(route *gin.Engine) {
 	route.POST("create", Create)
 	route.PUT("update", Update)
 	route.DELETE("delete", Delete)
+	route.POST("sendStudentToKafka",SendStudentToKafka)
 }

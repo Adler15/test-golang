@@ -25,7 +25,7 @@ definitions:
       test5:
         type: string
     type: object
-host: 192.168.130.70:9195
+host: localhost:9195
 info:
   contact:
     email: chenfeilong1115@hotmail.com
@@ -238,6 +238,50 @@ paths:
       summary: 查询一条测试类
       tags:
       - 测试类的增删查改
+  /sendStudentToKafka:
+    post:
+      consumes:
+      - application/json
+      description: 给kafka的cfltest找个topic发送消息
+      parameters:
+      - description: send student to kafka
+        in: body
+        name: test
+        required: true
+        schema:
+          $ref: '#/definitions/student.StudentTest'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: student info
+          schema:
+            $ref: '#/definitions/student.StudentTest'
+      summary: 给kafka发送消息
+      tags:
+      - kafka测试student
+  /sendToKafka:
+    post:
+      consumes:
+      - application/json
+      description: 给kafka的cfltest找个topic发送消息
+      parameters:
+      - description: send test to kafka
+        in: body
+        name: test
+        required: true
+        schema:
+          $ref: '#/definitions/test.Test'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: info
+          schema:
+            $ref: '#/definitions/test.Test'
+      summary: 给kafka发送消息
+      tags:
+      - kafka测试
   /update:
     put:
       consumes:

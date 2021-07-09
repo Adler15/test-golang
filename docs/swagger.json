@@ -15,7 +15,7 @@
         },
         "version": "1.0"
     },
-    "host": "192.168.130.70:9195",
+    "host": "localhost:9195",
     "paths": {
         "/create": {
             "post": {
@@ -315,6 +315,74 @@
                 "responses": {
                     "200": {
                         "description": "Test",
+                        "schema": {
+                            "$ref": "#/definitions/test.Test"
+                        }
+                    }
+                }
+            }
+        },
+        "/sendStudentToKafka": {
+            "post": {
+                "description": "给kafka的cfltest找个topic发送消息",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "kafka测试student"
+                ],
+                "summary": "给kafka发送消息",
+                "parameters": [
+                    {
+                        "description": "send student to kafka",
+                        "name": "test",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/student.StudentTest"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "student info",
+                        "schema": {
+                            "$ref": "#/definitions/student.StudentTest"
+                        }
+                    }
+                }
+            }
+        },
+        "/sendToKafka": {
+            "post": {
+                "description": "给kafka的cfltest找个topic发送消息",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "kafka测试"
+                ],
+                "summary": "给kafka发送消息",
+                "parameters": [
+                    {
+                        "description": "send test to kafka",
+                        "name": "test",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/test.Test"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "info",
                         "schema": {
                             "$ref": "#/definitions/test.Test"
                         }

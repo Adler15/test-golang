@@ -1,0 +1,79 @@
+variables:
+  IMAGE_REGISTRY: dev.kmx.k2data.com.cn:5001
+  CI_REGISTRY_USER: admin
+  CI_REGISTRY_PASSWORD: 1q2w3e
+  IMAGE_VERSION: ${CI_COMMIT_REF_NAME}
+  IMAGE_NAME: dfem/bcf-basic-ms
+  #DOCKER_HOST: tcp://localhost:2375
+  STAGING_ENABLED: "true"
+  MAVEN_OPTS: "-Dmaven.repo.local=.m2/repository"
+
+
+  docker_file: "docker-compose.yml"
+  local_path: "./"
+  host_109: "192.168.130.109"
+  host_117: "192.168.130.117"
+  port: "22"
+  username: "root"
+  password: "K2data1234"
+  target_path: "/home/bcf-basic-ms/"
+
+
+
+stages:
+  - build
+  - deploy_dev
+  - deploy_master
+ 
+  
+build:
+  stage: build
+  image: dev.kmx.k2data.com.cn:5001/public/gitlab-mvn-docker-jdk-1.0
+  services:
+    - name: dev.kmx.k2data.com.cn:5001/public/docker:18-dind
+      command: [ "--insecure-registry=dev.kmx.k2data.com.cn:5001" ]
+  before_script:
+    - bash -c "echo \"limit nofile 262144 262144\" >> /etc/init/docker.conf"
+    - service docker start
+  script:
+    - curl --create-dirs --insecure -o /root/.m2/settings.xml http://192.168.130.52:9000/k2data/settings.xml
+    - echo "192.168.130.52 dev.kmx.k2data.com.cn " >>/etc/hosts
+    - mvn clean package -DskipTests=true
+    - ls -l ./basic-nacos-ms/target/
+    - mkdir -p /etc/docker/certs.d/dev.kmx.k2data.com.cn:5001 && cp ./ca/ca.crt /etc/docker/certs.d/dev.kmx.k2data.com.cn:5001/
+    - docker login -u$CI_REGISTRY_USER -p$CI_REGISTRY_PASSWORD ${IMAGE_REGISTRY}
+    - docker build -t ${IMAGE_REGISTRY}/${IMAGE_NAME}:${IMAGE_VERSION}-${CI_COMMIT_SHORT_SHA} .
+    - docker push  ${IMAGE_REGISTRY}/${IMAGE_NAME}:${IMAGE_VERSION}-${CI_COMMIT_SHORT_SHA}
+  artifacts:
+    paths:
+      - ./
+  cache: #缓存所有未被追踪的文件
+    untracked: true
+    key: ${CI_COMMIT_REF_NAME}
+
+deploy_dev:
+  stage: deploy_dev
+  image: dev.kmx.k2data.com.cn:5001/public/python-gitlab:latest
+  script:
+    - chmod +x ./deploy/auto_deploy.py
+    - echo "192.168.130.52 dev.kmx.k2data.com.cn " >>/etc/hosts
+    - cat /etc/hosts
+    - python3 ./deploy/auto_deploy.py ${docker_file} $local_path  ${IMAGE_REGISTRY}/${IMAGE_NAME}:${IMAGE_VERSION}-${CI_COMMIT_SHORT_SHA} ${host_109}  ${port} ${username} ${password} ${target_path}
+  dependencies:
+     - build
+  except:
+    - master
+
+deploy_master:
+  stage: deploy_master
+  image: dev.kmx.k2data.com.cn:5001/public/python-gitlab:latest
+  script:
+    - chmod +x ./deploy/auto_deploy.py
+    - echo "192.168.130.52 dev.kmx.k2data.com.cn " >>/etc/hosts
+    - cat /etc/hosts
+    - python3 ./deploy/auto_deploy.py  ${docker_file}  $local_path ${IMAGE_REGISTRY}/${IMAGE_NAME}:${IMAGE_VERSION}-${CI_COMMIT_SHORT_SHA} ${host_117}  ${port} ${username} ${password} ${target_path} 
+  dependencies:
+     - build
+  only:
+    - master
+

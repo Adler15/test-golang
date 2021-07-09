@@ -13,6 +13,7 @@ func findAll() []StudentTest {
 
 func findOne(id string) StudentTest {
 	db := db.GetDB()
+	st := StudentTest{}
 	db.First(&st, id)
 	return st
 }

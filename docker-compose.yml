@@ -7,7 +7,7 @@ services:
     #    env_file:
     #      - ./envfile
     environment:
-      - BCF_NACOS_IP=192.168.130.70
+      - BCF_NACOS_IP=192.168.130.109
     ports:
       - "9195:9195"
     volumes:

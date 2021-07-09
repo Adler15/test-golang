@@ -338,6 +338,74 @@ var doc = `{
                 }
             }
         },
+        "/sendStudentToKafka": {
+            "post": {
+                "description": "给kafka的cfltest找个topic发送消息",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "kafka测试student"
+                ],
+                "summary": "给kafka发送消息",
+                "parameters": [
+                    {
+                        "description": "send student to kafka",
+                        "name": "test",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/student.StudentTest"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "student info",
+                        "schema": {
+                            "$ref": "#/definitions/student.StudentTest"
+                        }
+                    }
+                }
+            }
+        },
+        "/sendToKafka": {
+            "post": {
+                "description": "给kafka的cfltest找个topic发送消息",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "kafka测试"
+                ],
+                "summary": "给kafka发送消息",
+                "parameters": [
+                    {
+                        "description": "send test to kafka",
+                        "name": "test",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/test.Test"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "info",
+                        "schema": {
+                            "$ref": "#/definitions/test.Test"
+                        }
+                    }
+                }
+            }
+        },
         "/update": {
             "put": {
                 "description": "更新学生数据",
@@ -463,7 +531,7 @@ type swaggerInfo struct {
 // SwaggerInfo holds exported Swagger Info so clients can modify it
 var SwaggerInfo = swaggerInfo{
 	Version:     "1.0",
-	Host:        "192.168.130.70:9195",
+	Host:        "localhost:9195",
 	BasePath:    "",
 	Schemes:     []string{},
 	Title:       "The Golang Project of Victor",

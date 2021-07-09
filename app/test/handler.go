@@ -1,6 +1,7 @@
 package test
 
 import (
+	"encoding/json"
 	"github.com/gin-gonic/gin"
 	"net/http"
 )
@@ -88,4 +89,24 @@ func FindByWhere(ctx *gin.Context) {
 	ctx.BindJSON(&where)
 	byWhere := findByWhere(where)
 	ctx.JSON(200, gin.H{"data:": byWhere})
+}
+
+//@Summary 给kafka发送消息
+//@Description 给kafka的cfltest找个topic发送消息
+//@Tags kafka测试
+//@Accept json
+//@Produce json
+//@Param test body test.Test true "send test to kafka"
+//@Success 200 {object} test.Test "info"
+//@Router /sendToKafka [post]
+func SendToKafka(ctx *gin.Context) {
+	content := make(map[string]interface{})
+	ctx.BindJSON(&content)
+	contestBytes, _ := json.Marshal(content)
+	err := sendToKafka("cfltest", contestBytes)
+	if err != nil {
+		ctx.JSON(http.StatusInternalServerError, gin.H{"message": "发送kafka失败，error=" + err.Error()})
+	}
+	ctx.JSON(200, gin.H{"message": "发送kafka成功"})
+
 }

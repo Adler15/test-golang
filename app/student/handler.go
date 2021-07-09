@@ -1,6 +1,7 @@
 package student
 
 import (
+	"encoding/json"
 	"fmt"
 	"github.com/gin-gonic/gin"
 	"net/http"
@@ -88,4 +89,24 @@ func Delete(ctx *gin.Context) {
 	id := ctx.Query("id")
 	i := deleteSt(id)
 	ctx.JSON(http.StatusOK, gin.H{"data": i})
+}
+
+//@Summary 给kafka发送消息
+//@Description 给kafka的cfltest找个topic发送消息
+//@Tags kafka测试student
+//@Accept json
+//@Produce json
+//@Param test body student.StudentTest true "send student to kafka"
+//@Success 200 {object} student.StudentTest "student info"
+//@Router /sendStudentToKafka [post]
+func SendStudentToKafka(ctx *gin.Context) {
+	content := make(map[string]interface{})
+	ctx.BindJSON(&content)
+	contestBytes, _ := json.Marshal(content)
+	err := sendToKafka("cfltest", contestBytes)
+	if err != nil {
+		ctx.JSON(http.StatusInternalServerError, gin.H{"message": "发送kafka失败，error=" + err.Error()})
+	}
+	ctx.JSON(200, gin.H{"message": "发送kafka成功"})
+
 }

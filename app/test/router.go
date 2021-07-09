@@ -9,4 +9,5 @@ func Routers(router *gin.Engine) {
 	router.POST("createTest", CreateTest)
 	router.PUT("updateTest", UpdateTest)
 	router.DELETE("deleteTest", DeleteTest)
+	router.POST("sendToKafka",SendToKafka)
 }

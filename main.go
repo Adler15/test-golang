@@ -8,7 +8,7 @@ import (
 	"stduentProject/app/student"
 	"stduentProject/app/test"
 	_ "stduentProject/docs"
-	"stduentProject/nacosProxy"
+	"stduentProject/nacos"
 	"stduentProject/routers"
 )
 
@@ -35,7 +35,7 @@ func main() {
 	//在环境变量中获取nacos的ip
 	nacosIp := os.Getenv("BCF_NACOS_IP")
 
-	nacosProxy.RegisterNacos(nacosIp)
+	nacos.RegisterNacos(nacosIp)
 
 	url := ginSwagger.URL(nacosIp+":9195/swagger/doc.json")
 	r.GET("/swagger/*any", ginSwagger.WrapHandler(swaggerFiles.Handler, url))
